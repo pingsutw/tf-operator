@@ -3,6 +3,17 @@ kind: "TFJob"
 metadata:
   name: "dist-mnist-for-e2e-test"
 spec:
+  containers:
+  - image: k8s.gcr.io/git-sync:v3.1.3
+    name: test-server
+    volumeMounts:
+    - name: git-source
+      mountPath: /tmp/git
+    env:
+    - name: GIT_SYNC_REPO
+      value: https://github.com/kubeflow/tf-operator.git  ##Changing value
+    - name: GIT_SYNC_DEST
+      value: git-sync        
   tfReplicaSpecs:
     PS:
       replicas: 2

@@ -2,8 +2,19 @@ apiVersion: "kubeflow.org/v1"
 kind: "TFJob"
 metadata:
   name: "mnist"
-  namespace: kubeflow 
+  namespace: submarine
 spec:
+  containers:
+  - image: k8s.gcr.io/git-sync:v3.1.3
+    name: test-server
+    volumeMounts:
+    - name: git-source
+      mountPath: /tmp/git
+    env:
+    - name: GIT_SYNC_REPO
+      value: https://github.com/kubeflow/tf-operator.git
+    - name: GIT_SYNC_DEST
+      value: git-sync
   cleanPodPolicy: None 
   tfReplicaSpecs:
     Worker:
